@@ -1,0 +1,58 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# TypeScript build output
+dist/
+build/
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# Coverage output
+coverage/
+
+# Temporary files
+*.swp
+*~
+.vscode/
+
+# Docker
+docker-compose.override.yml
+Dockerfile
+
+# Kubernetes
+.kube/
+
+# NPM package and other artifacts
+package-lock.json
+*.tgz
+
+# Prisma
+prisma/dev.db
+prisma/migrations/
+
+# Next.js build folder (if applicable)
+.next/
+out/
+
+# Test output (if applicable)
+jest/

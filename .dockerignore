@@ -1,0 +1,10 @@
+**/node_modules
+**/.next
+**/dist
+**/.env
+**/.git
+**/README.md
+**/LICENSE
+**/.vscode
+**/.idea
+**/*.log

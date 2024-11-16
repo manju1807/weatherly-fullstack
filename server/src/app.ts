@@ -23,13 +23,19 @@ app.use(express.urlencoded({ extended: true }));
 // Security Middleware: Set HTTP headers for protection
 app.use(helmet());
 
+// Updated CORS configuration with more specific options
+const corsOptions = {
+  origin: ENV.CORS_ORIGINS === '*' 
+    ? true 
+    : ENV.CORS_ORIGINS.split(',').map(origin => origin.trim()),
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  maxAge: 86400, // 24 hours
+};
+
 // CORS configuration: Allow requests from specified origins
-app.use(
-	cors({
-		origin: ENV.CORS_ORIGINS.split(","), // Parse the origins from environment variable
-		credentials: true, // Allow credentials (cookies, authorization headers)
-	}),
-);
+app.use(cors(corsOptions));
 
 // Apply rate limiter to prevent abuse
 app.use(rateLimiter);

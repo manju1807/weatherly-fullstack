@@ -10,13 +10,13 @@ export async function fetchWeatherData(lat: number, lon: number): Promise<Weathe
     const response = await axiosInstance.get<{
       success: boolean;
       data: WeatherData;
-    }>(`${API_BASE_URL}/data`, {
+    }>('/data', {
       params: {
         lat: lat.toString(),
         lon: lon.toString(),
       },
     });
-
+    
     if (!response.data.success) {
       throw new Error('Failed to fetch weather data');
     }
@@ -30,13 +30,11 @@ export async function fetchWeatherData(lat: number, lon: number): Promise<Weathe
 
 export async function searchCities(query: string): Promise<City[]> {
   try {
-    const response = await axiosInstance.get<{
+  const response = await axiosInstance.get<{
       success: boolean;
       data: City[];
-    }>(`${API_BASE_URL}/cities`, {
-      params: {
-        q: query,
-      },
+    }>('/cities', {
+      params: { q: query },
     });
 
     if (!response.data.success) {

@@ -1,0 +1,15 @@
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-svc
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: "/health"  # Updated to match your health endpoint
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 5000
+    targetPort: 5000
+    protocol: TCP
+  type: ClusterIP

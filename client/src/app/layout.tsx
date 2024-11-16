@@ -1,4 +1,3 @@
-import { Analytics } from '@/components/googleAnalytics';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -22,7 +21,6 @@ export default function RootLayout({
           <main id="main-content" className="min-h-screen text-nowrap">
             <TooltipProvider>{children}</TooltipProvider>
           </main>
-          <Analytics />
         </ThemeProvider>
       </body>
     </html>

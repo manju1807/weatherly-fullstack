@@ -1,0 +1,74 @@
+cat <<EOF > .gitignore
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Environment files
+.env
+.env.local
+.env.*
+
+# Terraform
+*.tfstate
+.tfstate.
+.terraform/
+.terraform.lock.hcl
+.terraformrc
+terraform.rc
+*.tfvars
+!terraform.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Logs
+logs/
+*.log
+.log.
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# TypeScript build output
+dist/
+build/
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# Coverage output
+coverage/
+
+# Temporary files
+*.swp
+*~
+.vscode/
+
+# Docker
+docker-compose.override.yml
+Dockerfile.*
+
+# Kubernetes
+.kube/
+kubernetes//*.local.yaml
+
+# NPM package and other artifacts
+*.tgz
+
+# Prisma
+prisma/dev.db
+prisma/migrations/
+
+# Next.js build folder
+.next/
+out/
+
+# Test output
+jest/
+EOF

@@ -1,0 +1,53 @@
+# 1. Backend Deployment Fixes (backend-deployment.yaml)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: manju1807/weatherly-backend:v1.0.1
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: weatherly-config
+        - secretRef:
+            name: weatherly-secret
+        env:
+        - name: PORT
+          value: "5000"
+        - name: NODE_ENV
+          value: "production"
+        - name: CORS_ORIGINS
+          value: "*"  # Allow all origins since we're behind ingress
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          timeoutSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 20
+          periodSeconds: 20
+          timeoutSeconds: 3

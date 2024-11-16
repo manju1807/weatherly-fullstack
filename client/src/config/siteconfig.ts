@@ -24,7 +24,7 @@ export const viewport: Viewport = {
 
 // Site configuration
 export const siteConfig = {
-  url: 'https://k8s-weatherly-5842770101-1506936625.us-east-1.elb.amazonaws.com/',
+  url: 'http://localhost:3000',
   name: 'Weatherly',
   title: 'Weatherly: Real-Time Weather Updates & Forecasts',
   description:

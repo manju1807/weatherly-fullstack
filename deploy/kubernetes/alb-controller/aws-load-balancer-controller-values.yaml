@@ -1,0 +1,21 @@
+#aws-load-balancer-controller-values.yaml
+clusterName: weatherly-eks
+serviceAccount:
+  create: false  # Set to false because we created it using eksctl
+  name: aws-load-balancer-controller
+
+vpcId: vpc-0b2a6fe824df25124
+region: us-east-1
+
+podLabels:
+  app: aws-load-balancer-controller
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+enableServiceMutatorWebhook: true

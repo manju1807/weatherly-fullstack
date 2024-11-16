@@ -1,19 +1,22 @@
 # Build stage
-FROM node:18-alpine as builder
+FROM --platform=linux/amd64 node:18-alpine AS builder
+# Add platform-specific build configurations
+RUN apk add --no-cache python3 make g++
+
 WORKDIR /app
 
 # Use relative paths from the build context (which is the root directory)
 COPY server/package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Copy the rest of the backend application
 COPY server/ ./
 
 # Set build time arguments
 ARG NODE_ENV=development
-ARG PORT=5000
+ARG PORT=5001
 ARG CORS_ORIGINS
 ARG OPENWEATHER_API_KEY
 ARG BASE_URL
@@ -36,7 +39,7 @@ RUN npm install --save-dev typescript @types/node @types/express
 RUN npm run build
 
 # Production stage
-FROM node:18-alpine
+FROM --platform=linux/amd64 node:18-alpine
 WORKDIR /app
 
 # Copy built assets and package files
@@ -44,7 +47,7 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
 
 # Install production dependencies only
-RUN npm install --production --omit=dev
+RUN npm ci --production --omit=dev
 
 # Expose port
 EXPOSE 5000

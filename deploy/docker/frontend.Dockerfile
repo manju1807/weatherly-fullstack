@@ -1,12 +1,15 @@
 # Build stage
-FROM node:18-alpine as builder
+FROM --platform=linux/amd64 node:18-alpine AS builder
+# Add platform-specific build configurations
+RUN apk add --no-cache python3 make g++
+
 WORKDIR /app
 
 # Use relative paths from the build context (which is the root directory)
 COPY client/package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Copy the rest of the frontend application
 COPY client/ ./
@@ -25,7 +28,7 @@ ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
 RUN npm run build
 
 # Production stage
-FROM node:18-alpine
+FROM --platform=linux/amd64 node:18-alpine
 WORKDIR /app
 
 # Copy built assets
@@ -35,7 +38,7 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/next.config.mjs ./next.config.mjs
 
 # Install production dependencies only
-RUN npm install --production --omit=dev
+RUN npm ci --production --omit=dev
 
 # Expose port
 EXPOSE 3000

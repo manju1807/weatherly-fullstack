@@ -3,10 +3,14 @@ services:
     build:
       context: .
       dockerfile: deploy/docker/frontend.Dockerfile
+      platforms:
+        - linux/amd64
       args:
         - NEXT_PUBLIC_OPENWEATHER_API_KEY=${NEXT_PUBLIC_OPENWEATHER_API_KEY}
         - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
         - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+    image: nish714/weatherly-frontend:v1.0.1
+    platform: linux/amd64
     ports:
       - "3000:3000"
     environment:
@@ -17,11 +21,19 @@ services:
       - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
     depends_on:
       - backend
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   backend:
     build:
       context: .
       dockerfile: deploy/docker/backend.Dockerfile
+      platforms:
+        - linux/amd64
       args:
         - NODE_ENV=${NODE_ENV}
         - PORT=${PORT}
@@ -31,6 +43,8 @@ services:
         - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS}
         - RATE_LIMIT_MAX=${RATE_LIMIT_MAX}
         - CACHE_TTL=${CACHE_TTL}
+    image: nish714/weatherly-backend:v1.0.1
+    platform: linux/amd64
     ports:
       - "5000:5000"
     environment:
@@ -42,3 +56,14 @@ services:
       - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS}
       - RATE_LIMIT_MAX=${RATE_LIMIT_MAX}
       - CACHE_TTL=${CACHE_TTL}
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5000/api/v1/weather/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  default:
+    name: weatherly-network
+    driver: bridge
